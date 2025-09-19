@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.env
+.venv/
+venv/
+.env.*
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Foundry
+out/
+cache/
+lib/
+
+# Docker
+docker/*.env

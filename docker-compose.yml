@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  anvil:
+      build:
+            context: ./docker
+                  dockerfile: Dockerfile.simulator
+                      ports:
+                            - "8545:8545"
+
+                              agent:
+                                  build:
+                                        context: .
+                                              dockerfile: docker/Dockerfile.agent
+                                                  environment:
+                                                        - RPC_HTTP_URL=http://anvil:8545
+                                                              - CHAIN_ID=31337
+                                                                    - DRY_RUN=true
+                                                                          - AI_PROVIDER=local
+                                                                                - LOG_LEVEL=INFO
+                                                                                      # Mount or pass secrets via docker secrets or env
+                                                                                            # - PRIVATE_KEY=0x...
+                                                                                                  # - PUBLIC_ADDRESS=0x...
+                                                                                                      depends_on:
+                                                                                                            - anvil
+                                                                                                            

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-contracts-and-export-abis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Forge build
+        run: forge build
+      - name: Export ABIs
+        run: bash scripts/export_abis.sh
+      - name: Upload ABIs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: abis
+          path: abis/*.json
+
+  test-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run pytest
+        env:
+          # Provide dummy env so config loads; adjust as needed for CI
+          AI_PROVIDER: local
+          PRIVATE_KEY: 0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          PUBLIC_ADDRESS: 0x0000000000000000000000000000000000000001
+          RPC_HTTP_URL: http://localhost:8545
+        run: |
+          pytest -q

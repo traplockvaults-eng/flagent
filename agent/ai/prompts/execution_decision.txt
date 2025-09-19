@@ -1,0 +1,12 @@
+System: Execution Decision
+Decide whether to execute given the risk analysis and current gas market. If execute=true, suggest a max gas price (gwei). Output strictly valid JSON:
+
+{
+      "opportunity_id": "<string>",
+        "execute": true,
+          "reason": "<short explanation>",
+            "max_gas_gwei": 15.0
+}
+No extra commentary.
+
+}
